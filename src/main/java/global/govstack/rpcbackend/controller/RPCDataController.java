@@ -5,6 +5,8 @@ import global.govstack.rpcbackend.dto.RpcDataDto;
 import global.govstack.rpcbackend.dto.SetDataDto;
 import global.govstack.rpcbackend.service.RPCDataService;
 import global.govstack.rpcbackend.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ public class RPCDataController {
 
   @PostMapping("/data")
   @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(summary = "Get Stored data by tenant & data-key")
   public RpcDataDto get(Principal principal, @RequestBody GetDataDto getDataDto) {
     var user = userService.loadUserByUsername(principal.getName());
     return rpcDataService.getData(user, getDataDto.getKey(), getDataDto.getTenant());
@@ -33,9 +36,10 @@ public class RPCDataController {
 
   @PutMapping("/data")
   @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(summary = "Store data by tenant & data-key")
   public RpcDataDto put(
       Principal principal,
-      @RequestHeader(name = "Authorization") String authorisation,
+      @Parameter(hidden = true) @RequestHeader(name = "Authorization") String authorisation,
       @RequestBody SetDataDto setDataDto) {
     var user = userService.loadUserByUsername(principal.getName());
     return rpcDataService.setData(
@@ -44,9 +48,12 @@ public class RPCDataController {
 
   @PatchMapping("/data")
   @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(
+      summary =
+          "Force Store data by tenant & data-key (Useful when trying to override data from different session!)")
   public RpcDataDto set(
       Principal principal,
-      @RequestHeader(name = "Authorization") String authorisation,
+      @Parameter(hidden = true) @RequestHeader(name = "Authorization") String authorisation,
       @RequestBody SetDataDto setDataDto) {
     var user = userService.loadUserByUsername(principal.getName());
     return rpcDataService.setData(
@@ -60,6 +67,9 @@ public class RPCDataController {
 
   @DeleteMapping("/session")
   @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(
+      summary =
+          "Invalidate storage session. Every other session will be able to override data for that tenant + user + key")
   public ResponseEntity flushStorageSessions(Principal principal, @RequestParam String tenant) {
     var user = userService.loadUserByUsername(principal.getName());
     rpcDataService.flushStorageSessions(user, tenant);

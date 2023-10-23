@@ -8,6 +8,7 @@ import global.govstack.rpcbackend.repository.RoleRepository;
 import global.govstack.rpcbackend.repository.UserRepository;
 import global.govstack.rpcbackend.service.CustomUserDetailsService;
 import global.govstack.rpcbackend.util.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class AuthController {
 
   @Autowired private PasswordEncoder passwordEncoder;
 
+  @Operation(summary = "Register user.")
   @PostMapping("/register")
   public ResponseEntity<String> addNewUser(@RequestBody SignUpDto signUpDto) {
 
@@ -55,6 +57,7 @@ public class AuthController {
     return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
   }
 
+  @Operation(summary = "Obtain token by Username and Password.")
   @PostMapping("/token")
   public String authenticateAndGetToken(@RequestBody LoginDto authRequest) {
     Authentication authentication =
