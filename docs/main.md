@@ -19,3 +19,6 @@ Backend application for store static data produced from Frontend applications us
 1. [Implementation](./../)
 2. [Main](./main.md)
 3. [Env vars](./env-vars.md)
+4. [Docker](./docker.md)
+5. [Helm](./helm-install.md)
+6. [Kubernetes](./kubernetes-access.md)
