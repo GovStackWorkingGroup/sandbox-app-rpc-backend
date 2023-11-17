@@ -1,13 +1,12 @@
 package global.govstack.rpcbackend.controller;
 
-import global.govstack.rpcbackend.dto.GetDataDto;
-import global.govstack.rpcbackend.dto.RpcDataDto;
-import global.govstack.rpcbackend.dto.SetDataDto;
+import global.govstack.rpcbackend.dto.*;
 import global.govstack.rpcbackend.service.RPCDataService;
 import global.govstack.rpcbackend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.security.Principal;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +33,23 @@ public class RPCDataController {
     return rpcDataService.getData(user, getDataDto.getKey(), getDataDto.getTenant());
   }
 
+  @PostMapping("/data-set")
+  @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(summary = "Get Stored data entries by tenant & data-key")
+  public List<RpcDataDto> get(Principal principal, @RequestBody GetDataSetDto getDataSetDto) {
+    var user = userService.loadUserByUsername(principal.getName());
+    return rpcDataService.getData(user, getDataSetDto.getKeys(), getDataSetDto.getTenant());
+  }
+
+  @PostMapping("/data-collection")
+  @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(summary = "Get Stored data entries by tenant & data-key")
+  public List<RpcDataDto> get(
+      Principal principal, @RequestBody GetDataCollectionDto getDataCollectionDto) {
+    var user = userService.loadUserByUsername(principal.getName());
+    return rpcDataService.getData(user, getDataCollectionDto.getTenant());
+  }
+
   @PutMapping("/data")
   @PreAuthorize("hasAuthority('ROLE_USER')")
   @Operation(summary = "Store data by tenant & data-key")
@@ -44,6 +60,18 @@ public class RPCDataController {
     var user = userService.loadUserByUsername(principal.getName());
     return rpcDataService.setData(
         user, authorisation, setDataDto.getTenant(), setDataDto.getKey(), setDataDto.getValue());
+  }
+
+  @PutMapping("/data-set")
+  @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(summary = "Store multiple data records by tenant & data-key")
+  public List<RpcDataDto> put(
+      Principal principal,
+      @Parameter(hidden = true) @RequestHeader(name = "Authorization") String authorisation,
+      @RequestBody SetDataSetDto setDataSetDto) {
+    var user = userService.loadUserByUsername(principal.getName());
+    return rpcDataService.setDataSet(
+        user, authorisation, setDataSetDto.getTenant(), setDataSetDto.getKeyValuePairs());
   }
 
   @PatchMapping("/data")
@@ -63,6 +91,18 @@ public class RPCDataController {
         setDataDto.getKey(),
         setDataDto.getValue(),
         true);
+  }
+
+  @PatchMapping("/data-set")
+  @PreAuthorize("hasAuthority('ROLE_USER')")
+  @Operation(summary = "Force Store multiple data records by tenant & data-key")
+  public List<RpcDataDto> set(
+      Principal principal,
+      @Parameter(hidden = true) @RequestHeader(name = "Authorization") String authorisation,
+      @RequestBody SetDataSetDto setDataSetDto) {
+    var user = userService.loadUserByUsername(principal.getName());
+    return rpcDataService.setDataSet(
+        user, authorisation, setDataSetDto.getTenant(), setDataSetDto.getKeyValuePairs(), true);
   }
 
   @DeleteMapping("/session")
