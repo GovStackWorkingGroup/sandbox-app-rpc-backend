@@ -4,6 +4,8 @@ import global.govstack.rpcbackend.dto.RpcDataDto;
 import global.govstack.rpcbackend.model.RPCData;
 import global.govstack.rpcbackend.model.User;
 import global.govstack.rpcbackend.repository.RPCDataRepository;
+import global.govstack.rpcbackend.service.exception.rpc.DataInvalidationException;
+import global.govstack.rpcbackend.service.exception.rpc.DataNotFoundException;
 import global.govstack.rpcbackend.util.JwtUtils;
 import java.util.*;
 import org.modelmapper.ModelMapper;
@@ -14,9 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RPCDataService {
 
-  private RPCDataRepository rpcDataRepository;
-  private JwtUtils jwtUtils;
-
+  private final RPCDataRepository rpcDataRepository;
+  private final JwtUtils jwtUtils;
   private final ModelMapper modelMapper;
 
   public RPCDataService(
@@ -94,7 +95,7 @@ public class RPCDataService {
                 data.setDataValue(value);
                 data.setToken(token);
               } else {
-                throw new SecurityException("Data invalidation attempt!");
+                throw new DataInvalidationException("Data invalidation attempt!");
               }
               return data;
             })
@@ -102,7 +103,13 @@ public class RPCDataService {
   }
 
   public RpcDataDto getData(User user, String key, String tenant) {
-    return new RpcDataDto(rpcDataRepository.findByUserAndDataKeyAndTenant(user, key, tenant).get());
+    return new RpcDataDto(
+        rpcDataRepository
+            .findByUserAndDataKeyAndTenant(user, key, tenant)
+            .orElseThrow(
+                () ->
+                    new DataNotFoundException(
+                        "No data record found matching the provided criteria!")));
   }
 
   public List<RpcDataDto> getData(User user, Set<String> keys, String tenant) {
