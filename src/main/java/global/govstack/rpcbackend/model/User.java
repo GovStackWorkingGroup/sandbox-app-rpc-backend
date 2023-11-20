@@ -2,9 +2,11 @@ package global.govstack.rpcbackend.model;
 
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(
     name = "users",
@@ -19,7 +21,7 @@ public class User {
   private String username;
   private String password;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
   @JoinTable(
       name = "user_roles",
       joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
