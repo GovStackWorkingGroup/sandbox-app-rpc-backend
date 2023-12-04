@@ -22,3 +22,4 @@ Backend application for store static data produced from Frontend applications us
 4. [Docker](./docker.md)
 5. [Helm](./helm-install.md)
 6. [Kubernetes](./kubernetes-access.md)
+7. [API Endpoints](./api.md)

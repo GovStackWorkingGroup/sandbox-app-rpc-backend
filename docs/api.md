@@ -16,8 +16,8 @@ There are two main user roles in the application:
 |----------------------------|-------------------------|----------------------------------------------|
 | /api/v1/auth/token         | Authentication endpoint | To obtain JWT token for user with "APP" role |
 | /api/v1/user/              | Get logged user info    | To obtain data of the logged user            |
-| /api/v1/user/register/app  | Register App            | To register new user with "App" role         |
-| /api/v1/user/register/user | Register User           | To register new user with "User" role        |
+| /api/v1/user/register/app  | Register App            | To register new user with "APP" role         |
+| /api/v1/user/register/user | Register User           | To register new user with "USER" role        |
 
 ## User Role Endpoints
 
