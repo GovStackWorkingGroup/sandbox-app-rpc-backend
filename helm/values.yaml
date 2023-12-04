@@ -8,7 +8,7 @@ rpc_backend:
       app: "rpc-backend"
   container:
     name: rpc-backend-app
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/app/rpc/dev-backend
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/app/rpc/backend
     imageTag: 0.0.1
     imagePullPolicy: "Always"
   profiles: "container"

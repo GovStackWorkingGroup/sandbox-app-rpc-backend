@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 .*
 !.gitignore
 !.git*
+!.circleci
 *~
 
 
@@ -37,6 +38,7 @@ Icon
 
 # Package Files #
 *.jar
+!gradle/*.jar
 *.war
 *.ear
 
