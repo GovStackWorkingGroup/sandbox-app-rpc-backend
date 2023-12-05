@@ -34,7 +34,7 @@ spec:
               mountPath: {{ .Values.rpc_backend.dbPersist.mountPath }}
       containers:
         - name: {{ .Values.rpc_backend.container.name }}
-          image: "{{ .Values.rpc_backend.container.image }}:{{ .Values.rpc_backend.container.imageTag }}"
+          image: "{{ .Values.rpc_backend.container.image }}"
           imagePullPolicy: {{ .Values.rpc_backend.container.imagePullPolicy }}
           ports:
           - containerPort: 8080

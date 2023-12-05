@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   namespace:
     type: string
-    default: app-rpc
+    default: rpc-backend
   playground:
     type: boolean
     default: false
