@@ -1,7 +1,7 @@
 # CI CD
 
 ## Build image & Deployment
-Build image & Deployment process of creating image and installing Payment Builing Block EMULATOR in EKS cluster.
+Build image & Deployment process of creating image and installing RPC-backend application in EKS cluster.
 
 ### CI contexts
 
